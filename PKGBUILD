@@ -4,7 +4,7 @@ pkgrel=1
 pkgdesc="Backup Exec Remote Agent for Linux and UNIX Servers"
 url="http://www.symantec.com/"
 license=('commercial')
-arch=('x86_64')
+arch=('i686' 'x86_64')
 options=('!strip')
 depends=('libstdc++5')
 makedepends=('rpmextract' 'binutils')
@@ -25,6 +25,8 @@ build() {
 	mkdir unpack
 	cd unpack
         rpmextract.sh ../VRTSralus-14.0.1798-0.x86_64.rpm
+	mkdir -p etc/systemd/system/
+	cp ../ralus.service etc/systemd/system/
 
 	# Kernel 3.x patch
 	echo -n "Patching binary for 3.x kernel compatibility..."
@@ -38,5 +40,4 @@ build() {
 package() {
 	cd "${srcdir}/unpack"
 	cp -Rv * "${pkgdir}"
-	cp -Rv "${srcdir}/ralus.service" "/etc/systemd/system/"
 }
