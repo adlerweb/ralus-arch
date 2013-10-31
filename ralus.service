@@ -1,0 +1,10 @@
+[Unit]
+Description=Backup Exec Remote Agent for Linux and Unix Servers
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/opt/VRTSralus/bin/beremote --log-file /var/VRTSralus/beremote.service.log
+
+[Install]
+WantedBy=multi-user.target

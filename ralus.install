@@ -1,0 +1,29 @@
+post_install() {
+  echo -n "adding ralus system group... "
+  groupadd beoper && echo "done."
+  echo -n "adding root user to ralus system group... "
+  usermod -a -G beoper root && echo "done."
+  echo -n "adding backup system user... "
+  useradd -g beoper backup && echo "done."
+  echo "Please enter a passwort for user backup"
+  passwd -l backup &>/dev/null
+  mkdir /opt/VRTSralus/data/
+  chown -R root:beoper /opt/VRTSralus/
+  chown -R root:beoper /etc/VRTSralus/ralus.cfg
+  chown -R root:beoper /var/VRTSralus
+  chmod 775 /var/VRTSralus
+  chmod -R 755 /opt/VRTSralus/
+
+cat << EOF
+  Configuration is located at /etc/VRTSralus/ralus.cfg
+
+  Add the following line to configure the IP of your backup system:
+    Software\Symantec\Backup Exec For Windows\Backup Exec\Engine\Agents\Agent Directory List 1=1.2.3.4
+
+  User "passwd backup" to set a password for the backup user
+
+  Add the server as "Linux Server" to Backup Exec using the username "Backup" and the just entered password.
+  Upon browsing the server for the first time you will be asked to create a trust, this will generate SSL-Certificates for this server.
+
+EOF
+}
