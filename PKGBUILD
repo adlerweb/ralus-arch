@@ -31,9 +31,11 @@ build() {
 	# Kernel 3.x patch
 	echo -n "Patching binary for 3.x kernel compatibility..."
 	cd opt/VRTSralus/bin/
+	chmod +w libbesocket.so
 	pos=`objdump -D libbesocket.so | grep -6 0x8938 | grep '\.*:\?[[:space:]]\+79' | awk '{print $1}' | cut -d: -f1`
 	echo -n "Found offset ${pos}..."
 	echo "$pos: 78" | xxd -r - libbesocket.so
+	chmod -w libbesocket.so
 	echo "Done"
 }
 
